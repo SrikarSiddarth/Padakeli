@@ -1,9 +1,13 @@
 '''
-	First  try on building word-maker 
+	Identifies the possible word combinations
+
+
+	
 '''
 
 import numpy as np
 import csv
+import time
 
 # Node class in the form of linked lists
 # class Node: 
@@ -18,24 +22,29 @@ class TeluguPoti():
 
 	def __init__(self):
 
-		self.ka = [[]]
-		with open('ka.csv') as file:
+		self.dictionary = set()
+		with open('english_filtered.csv') as file:
 			file = csv.reader(file, delimiter=',')
 			line_count = 0
 			for row in file:
 				for i in range(len(row)):
-					self.ka[line_count].append(row[i])
-				self.ka.append([])
+					self.dictionary.add(row[i])
 				line_count += 1
 			print('Processed '+str(line_count)+' lines.')
 		# self.grid = [['స','క','వి','త'],
 		# 		['చా','మ','ర','ము'],
 		# 		['కు','ల','కం','న'],
 		# 		['కి','ము','ళ','గ']]
-		self.grid = [['కు','కూ','ల','ము'],
-					['కు','ఠా','ర','ము'],
-					['కు','డ','ప','ము'],
-					['కు','పి','తు','డు']]
+		# self.grid = [['కు','కూ','ల','ము'],
+		# 			['కు','ఠా','ర','ము'],
+		# 			['కు','డ','ప','ము'],
+		# 			['కు','పి','తు','డు']]
+		self.grid = [
+			['a','t','m','o'],
+			['p','i','n','k'],
+			['h','g','e','c'],
+			['a','l','b','u']
+		]
 		# self.g = self.grid[0]+self.grid[1]+self.grid[2]+self.grid[3]
 		self.buf = []
 		self.l = len(self.grid[0])
@@ -44,7 +53,7 @@ class TeluguPoti():
 	def save(self, k):
 		# with open('output.csv','w',newline='') as file:
 			# writer = csv.writer(file)
-			# writer.writerow(self.ka[8])
+			# writer.writerow(self.dictionary[8])
 		f = open("output.txt", "w")
 		for i in k:
 			f.write(i)
@@ -53,25 +62,22 @@ class TeluguPoti():
 
 
 	def filterFromDictionary(self):
-		s = []
-		for i in [0,4,8,12]:
-			for n in range(2,6):
-				print(i,n)
-				s += self.getWords(i,n)
+		wordList = []
+		# get words starting from each cell
+		for i in range(16):
+			# get words whose length is atleast 3 and atmost 6
+			for n in range(3,6):
+				# get the words starting from ith cell and length of n
+				wordList += self.getWords(i,n)
 				self.buf = []
-		s = list(dict.fromkeys(s))
-		print(len(s))
+		wordList = list(dict.fromkeys(wordList))
+		# print(len(wordList), wordList)
 		final = []
-		for k in s:
-			for i in range(len(self.ka)):
-				for j in self.ka[i]:
-					if k==j:
-						final.append(k)
-						break
-				else:
-					continue
-				break
-		print(len(final))
+		for word in wordList:
+			if word in self.dictionary:
+				final.append(word)
+
+		print('found {} words'.format(len(final)))
 		return final
 		
 
@@ -161,6 +167,18 @@ class TeluguPoti():
 		return r2
 
 
+	'''
+		function name: 	getWords
+		example call: 	x = self.getWords(0,5)     # this gets all the words starting from cell 0 and length 5
+		work: 			generates all possible words given the staring point(index) and the length of the words(num)
+		parameters: 
+						1) index: the starting cell of the words to be generated
+						2) num: length of the word to be found
+						
+		output: 		an array of words
+
+	'''
+
 	def getWords(self, index, num):
 		words = []
 		# print(index, num)
@@ -190,6 +208,8 @@ class TeluguPoti():
 
 	
 if __name__=='__main__':
+	t = time.time()
 	T = TeluguPoti()
 	T.save(T.filterFromDictionary())
+	print('time taken: {} seconds'.format(time.time()-t))
 	# T.save(T.getWords(0,2))
