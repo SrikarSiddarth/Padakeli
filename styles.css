@@ -1,0 +1,38 @@
+.puzzle {
+    position: absolute;
+    background: #ccc;
+    border: 2px solid #999;
+    margin: 20px;
+    height: 500px;
+    width: 500px;
+}
+
+.gameButton {
+    background-color: skyblue;
+    position: absolute;
+    padding: 10px;
+    margin: 100px;
+    border-radius: 40px;
+}
+
+.displayField {
+    position: absolute;
+    background-color: white;
+    border: 2px solid black; 
+    margin: 20px;
+    margin-left: 540px;
+    /*padding: 220px;*/
+    height: 200px;
+    width: 400px;
+}
+
+.archive {
+    position: absolute;
+    background-color: lightgray;
+    border: 2px solid black;
+    margin: 20px;
+    margin-top: 240px;
+    margin-left: 540px;
+    width: 400px;
+    height: 280px;
+}
